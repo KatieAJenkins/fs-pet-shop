@@ -50,16 +50,16 @@ if (cmd === 'read') {
             console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
             process.exit(1);
         }
-        petsP.push({age: age, kind: kind, name: name});
-        console.log(petsP);
-        //
-        var newPet = JSON.stringify(petsP);
+        var newPet = {age: age, kind: kind, name: name};
+        console.log(newPet);
+        petsP.push(newPet);
 
-        fs.writeFile(petsPath, newPet, function(writeErr) {
+        var petsJSON = JSON.stringify(petsP);
+
+        fs.writeFile(petsPath, petsJSON, function(writeErr) {
           if (writeErr) {
             throw writeErr;
           }
-          // console.log(newPet);
         });
     });
 }
