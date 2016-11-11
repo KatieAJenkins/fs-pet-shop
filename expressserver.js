@@ -1,16 +1,30 @@
 'use strict';
+var fs = require ('fs');
+var path = require ('path');
+var petsPath = path.join(__dirname, 'pets.json');
 
 var express = require('express');
 var app = express();
+var port = process.env.PORT || 3000;
+
+app.disable('x-powered-by');
 
 app.use(express.static('public'));
 
-app.get('/api', function(req, res){
-  res.send("hello from api");
+app.get('/pets', function(req, res){
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON){
+    if (err) {
+      console.log(err.stack);
+      return res.sendStatus(200);
+    }
+    var pets = JSON.parse(petsJSON);
+
+    res.send(pets);
+  });
 })
 
-app.listen('3000', function(){
-  console.log("listening on port ", 3000);
+app.listen(port, function(){
+  console.log("listening on port ", port);
 })
 
 app.use(function(req, res, next){
