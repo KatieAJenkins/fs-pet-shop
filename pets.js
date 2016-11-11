@@ -32,24 +32,24 @@ if (cmd === 'read') {
         };
     })
 
-// } else if (cmd === 'create') {
-//     fs.readFile(petsPath, 'utf8', function(readErr, data) {
-//       var petsP = JSON.parse(data);
-//       var age = parseInt(process.argv[3]);
-//       // console.log(age);
-//       var kind = process.argv[4];
-//       // console.log(kind);
-//       var name = process.argv[5];
-//       // console.log(name);
-//
-//         if (readErr) {
-//             throw readErr;
-//         }
-//
-//         if (!age || !kind || !name) {
-//             console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
-//             process.exit(1);
-//         }
+} else if (cmd === 'create') {
+    fs.readFile(petsPath, 'utf8', function(readErr, data) {
+      var petsP = JSON.parse(data);
+      var age = parseInt(process.argv[3]);
+      // console.log(age);
+      var kind = process.argv[4];
+      // console.log(kind);
+      var name = process.argv[5];
+      // console.log(name);
+
+        if (readErr) {
+            throw readErr;
+        }
+
+        if (!age || !kind || !name) {
+            console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
+            process.exit(1);
+        }
 //         petsP.push({age: age, kind: kind, name: name});
 //         console.log(petsP);
 //         //
@@ -61,8 +61,9 @@ if (cmd === 'read') {
 //         //   }
 //         //   console.log(age);
 //         // });
-    // });
-} else {
+    });
+}
+ else {
     console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
     process.exit(1);
 }
