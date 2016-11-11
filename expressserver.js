@@ -29,7 +29,8 @@ app.get('/pets/:id', function(req, res){
       console.log(err.stack);
       return res.sendStatus(200);
     }
-    var id = Number.parseInt(req.params.id);
+    var id = Number.parseInt(req.params.id);//what is this doing??
+    
     var pets = JSON.parse(petsJSON);
 
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
