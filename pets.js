@@ -54,13 +54,13 @@ if (cmd === 'read') {
         console.log(petsP);
         //
         var newPet = JSON.stringify(petsP);
-        //
-        // fs.writeFile(petsPath, petsJSON, function(writeErr) {
-        //   if (writeErr) {
-        //     throw writeErr;
-        //   }
-        //   console.log(newPet);
-        // });
+
+        fs.writeFile(petsPath, newPet, function(writeErr) {
+          if (writeErr) {
+            throw writeErr;
+          }
+          // console.log(newPet);
+        });
     });
 }
  else {
