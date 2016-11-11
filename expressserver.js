@@ -30,14 +30,13 @@ app.get('/pets/:id', function(req, res){
       return res.sendStatus(200);
     }
     var id = Number.parseInt(req.params.id);//what is this doing??
-    
+
     var pets = JSON.parse(petsJSON);
 
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
       return res.sendStatus(404);
     }
 
-    res.set('Content-Type', 'text/plain');
     res.send(pets[id]);
   });
 });
@@ -49,3 +48,5 @@ app.use(function(req, res, next){
 app.listen(port, function(){
   console.log("listening on port ", port);
 });
+
+module.exports = app;

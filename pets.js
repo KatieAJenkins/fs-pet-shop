@@ -53,7 +53,7 @@ if (cmd === 'read') {
 
         var newPet = {age: age, kind: kind, name: name};
         console.log(newPet);
-        
+
         petsP.push(newPet);
 
         var petsJSON = JSON.stringify(petsP);
