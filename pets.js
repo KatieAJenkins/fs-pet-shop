@@ -50,8 +50,10 @@ if (cmd === 'read') {
             console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
             process.exit(1);
         }
+
         var newPet = {age: age, kind: kind, name: name};
         console.log(newPet);
+        
         petsP.push(newPet);
 
         var petsJSON = JSON.stringify(petsP);
