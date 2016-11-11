@@ -21,12 +21,30 @@ app.get('/pets', function(req, res){
 
     res.send(pets);
   });
-})
+});
 
-app.listen(port, function(){
-  console.log("listening on port ", port);
-})
+app.get('/pets/:id', function(req, res){
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON){
+    if (err) {
+      console.log(err.stack);
+      return res.sendStatus(200);
+    }
+    var id = Number.parseInt(req.params.id);
+    var pets = JSON.parse(petsJSON);
+
+    if (id < 0 || id >= pets.length || Number.isNaN(id)) {
+      return res.sendStatus(404);
+    }
+
+    res.set('Content-Type', 'text/plain');
+    res.send(pets[id]);
+  });
+});
 
 app.use(function(req, res, next){
   res.status(404).send("404 Not Found")
-})
+});
+
+app.listen(port, function(){
+  console.log("listening on port ", port);
+});
