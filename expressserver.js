@@ -20,7 +20,7 @@ app.get('/pets', function(req, res){//??not doing anything with req - why again?
   fs.readFile(petsPath, 'utf8', function(err, data){//this will change to PostgreSQL
     if (err) { //error checking comes 1st!
       console.log(err.stack);//??not sure what this is
-      return res.sendStatus(200);//??research this more
+      return res.sendStatus(200);//??research this more..shouldnt this be a 400 msg
     }
     var pets = JSON.parse(data);//this variable must stay here!! changing .json data
     // console.log(data);
@@ -33,15 +33,20 @@ app.get('/pets/:id', function(req, res){
   fs.readFile(petsPath, 'utf8', function(err, data){
     if (err) {
       console.log(err.stack);
-      return res.sendStatus(200);
+      return res.sendStatus(200);//shouldnt this be a 400 message
     }
-    var id = Number.parseInt(req.params.id);//what is this doing??
-    //what if id is undefined?
 
-    var pets = JSON.parse(data);
+    var id = Number.parseInt(req.params.id);//parse string and return integer
+    // console.log(id);
+
+    var pets = JSON.parse(data);//do not move variable
 
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
       return res.sendStatus(404);
+    }
+
+    if (id === undefined) {
+      res.send(pets);
     }
 
     res.send(pets[id]);
@@ -62,15 +67,6 @@ app.post('/pets', function(req, res){
     return res.sendStatus(400);
   }
 
-  // if (!age){
-  //   return res.sendStatus(400);
-  // }
-
-  // if (!age || !kind || !name) {
-  //             console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
-  //             process.exit(1);
-  //         }}
-
   var pets = JSON.parse(petsJSON);
 
   pets.push(pet);
@@ -85,30 +81,6 @@ app.post('/pets', function(req, res){
   });
 })
 });
-
-// app.put('/pets/:id', function(req, res){
-//
-// })
-app.get('/pets/:id', function(req, res){
-  fs.readFile(petsPath, 'utf8', function(err, petsJSON){
-    if (err) {
-      console.log(err.stack);
-      return res.sendStatus(200);
-    }
-    var id = Number.parseInt(req.params.id);//what is this doing??
-
-    var pets = JSON.parse(petsJSON);
-
-    if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-      return res.sendStatus(404);
-    }
-
-    res.send(pets[id]);
-
-    //what if id is undefined
-  });
-});
-
 
 app.use(function(req, res, next){
   res.status(404).send("404 Not Found")
