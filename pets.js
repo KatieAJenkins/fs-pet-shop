@@ -21,9 +21,9 @@ if (cmd === 'read') {
         if (err) {
             throw err;
         } else if (index === undefined) {
-            var pets = petsP
+            var pets = pe extsP
             console.log(pets);
-        } else if (index < 0 || index > petsP.length - 1) {
+        } else if (index < 0 || index > petsP.length - 1) { //need to add NaN
             console.error(`Usage: ${node} ${file} ${cmd} INDEX`);
             process.exit(1);
         } else {
