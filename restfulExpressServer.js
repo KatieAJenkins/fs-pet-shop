@@ -133,18 +133,41 @@ app.put('/pets/:id', function(req, res) {
     });
 });
 
-
-
-//
-// if (id === undefined) {
-//   res.send(pets);
-// }
-
-
-
 //delete
 
-// app.delete("/pets/:id", 'utf8', function(req, res){
+app.delete("/pets/:id", function(req, res){
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+      if (err) {
+          console.log(err.stack);
+          return res.sendStatus(500);
+      }
+
+      var id = Number.parseInt(req.params.id); //parse string and return integer
+      // console.log(id);
+
+      var pets = JSON.parse(petsJSON); //do not move variable
+
+      var updatePet = pets[id];
+      console.log(pets[id]);
+
+      if (id < 0 || id >= pets.length || Number.isNaN(id)) {
+          return res.sendStatus(404);
+      }
+
+    pets.splice(id, 1);
+
+            var petsJSON = JSON.stringify(pets); //contents of the file we are reading if it doesn't error
+
+    fs.writeFile(petsPath, petsJSON, function(writeErr) {
+        if (writeErr) {
+            throw writeErr;
+        }
+        res.send(pets);
+    });
+  })
+});
+
+
 //   if(pets.length <= req.params.id){
 //     res.statusCode = 400;
 //     return res.send('400 Not Found');
