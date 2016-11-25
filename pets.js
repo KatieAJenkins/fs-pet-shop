@@ -23,7 +23,7 @@ if (cmd === 'read') {
         } else if (index === undefined) {
             var pets = petsP
             console.log(pets);
-        } else if (index < 0 || index > petsP.length - 1 || isNaN(index)) { //need to add NaN
+        } else if (index < 0 || index > petsP.length - 1 || isNaN(index)) {
             console.error(`Usage: ${node} ${file} ${cmd} INDEX`);
             process.exit(1);
         } else {
