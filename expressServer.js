@@ -16,24 +16,24 @@ var port = process.env.PORT || 3000;
 app.disable('x-powered-by'); //??ask about this
 
 // app.use(express.static('public'));
-app.use(function(req, res){
-  res.send('Hello world');
-})
+// app.use(function(req, res){
+//   res.send('Hello world');
+// })
 
 
 //get
-// app.get('/pets', function(req, res) { //??not doing anything with req - why again?
-//     fs.readFile(petsPath, 'utf8', function(err, data) { //this will change to PostgreSQL
-//         if (err) { //error checking comes 1st!
-//             console.log(err.stack); //??not sure what this is
-//             return res.sendStatus(500); //??research this more..shouldnt this be a 400 msg
-//         }
-//         var pets = JSON.parse(data); //this variable must stay here!! changing .json data
-//         // console.log(data);
-//         // console.log(pets);
-//         res.send(pets);
-//     });
-// });
+app.get('/pets', function(req, res) {
+    fs.readFile(petsPath, 'utf8', function(err, data) {
+        if (err) { //error checking comes 1st!
+            console.log(err.stack);
+            return res.sendStatus(500);
+        }
+        var pets = JSON.parse(data); //this variable must stay here!! changing .json data
+        // console.log(data);
+        // console.log(pets);
+        res.send(pets);
+    });
+});
 //
 // //get by index
 // app.get('/pets/:id', function(req, res) {
