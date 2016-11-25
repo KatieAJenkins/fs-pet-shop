@@ -28,37 +28,37 @@ app.get('/pets', function(req, res) {
             console.log(err.stack);
             return res.sendStatus(500);
         }
-        var pets = JSON.parse(data); //this variable must stay here!! changing .json data
+        var pets = JSON.parse(data);
         // console.log(data);
         // console.log(pets);
         res.send(pets);
     });
 });
-//
-// //get by index
-// app.get('/pets/:id', function(req, res) {
-//     fs.readFile(petsPath, 'utf8', function(err, data) {
-//         if (err) {
-//             console.log(err.stack);
-//             return res.sendStatus(500);
-//         }
-//
-//         var id = Number.parseInt(req.params.id); //parse string and return integer
-//         // console.log(id);
-//
-//         var pets = JSON.parse(data); //do not move variable
-//
-//         if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-//             return res.sendStatus(404);
-//         }
-//
-//         if (id === undefined) {
-//             res.send(pets);
-//         }
-//
-//         res.send(pets[id]);
-//     });
-// });
+
+//get by index
+app.get('/pets/:id', function(req, res) {
+    fs.readFile(petsPath, 'utf8', function(err, data) {
+        if (err) {
+            console.log(err.stack);
+            return res.sendStatus(500);
+        }
+
+        var id = Number.parseInt(req.params.id); //parse string and return integer
+        // console.log(id);
+
+        var pets = JSON.parse(data); //do not move variable
+
+        if (id < 0 || id >= pets.length || Number.isNaN(id)) {
+            return res.sendStatus(404);
+        }
+
+        if (id === undefined) {
+            res.send(pets);
+        }
+
+        res.send(pets[id]);
+    });
+});
 //
 // //post
 // app.post('/pets', function(req, res) {
