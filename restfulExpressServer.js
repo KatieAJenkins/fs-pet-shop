@@ -11,11 +11,13 @@ var morgan = require('morgan');
 app.use(morgan('dev'));
 
 var bodyParser = require('body-parser');
+app.use(bodyParser.json()); //middleware to parse body
+
 app.disable('x-powered-by'); //??ask about this
-app.use(bodyParser.json()); //??ask about this
 
 app.use(express.static('public'));
 
+//get
 app.get('/pets', function(req, res) { //??not doing anything with req - why again?
     fs.readFile(petsPath, 'utf8', function(err, data) { //this will change to PostgreSQL
         if (err) { //error checking comes 1st!
@@ -29,6 +31,7 @@ app.get('/pets', function(req, res) { //??not doing anything with req - why agai
     });
 });
 
+//get by index
 app.get('/pets/:id', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, data) {
         if (err) {
@@ -53,11 +56,12 @@ app.get('/pets/:id', function(req, res) {
     });
 });
 
+//post
 app.post('/pets', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
             console.log(err.stack);
-            return res.sendStatus(500);
+            return res.sendStatus(400);
         }
 
         var pet = req.body;
@@ -68,9 +72,8 @@ app.post('/pets', function(req, res) {
             return res.sendStatus(400);
         }
 
-        //need to fix error checking
         if (pet.age === undefined || pet.kind === undefined || pet.name === undefined) {
-            return res.sendStatus(500).send("Please enter pet age kind name");
+            return res.status(400).send("Please enter pet age kind name");
         }
 
         var pets = JSON.parse(petsJSON);
@@ -106,7 +109,7 @@ app.put('/pets/:id', function(req, res) {
         console.log(pets[id]);
 
         if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-            return res.sendStatus(404);
+            return res.sendStatus(400);
         }
 
         var newPet = req.body;
@@ -117,7 +120,7 @@ app.put('/pets/:id', function(req, res) {
         }
 
         if (newPet.age === undefined || newPet.kind === undefined || newPet.name === undefined) {
-            return res.sendStatus(500).send("Please enter pet age kind name");
+            return res.sendStatus(400).send("Please enter pet age kind name");
         }
 
         pets.splice(id, 1, newPet);
@@ -134,54 +137,43 @@ app.put('/pets/:id', function(req, res) {
 });
 
 //delete
-
-app.delete("/pets/:id", function(req, res){
-  fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
-      if (err) {
-          console.log(err.stack);
-          return res.sendStatus(500);
-      }
-
-      var id = Number.parseInt(req.params.id); //parse string and return integer
-      // console.log(id);
-
-      var pets = JSON.parse(petsJSON); //do not move variable
-
-      var updatePet = pets[id];
-      console.log(pets[id]);
-
-      if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-          return res.sendStatus(404);
-      }
-
-    pets.splice(id, 1);
-
-            var petsJSON = JSON.stringify(pets); //contents of the file we are reading if it doesn't error
-
-    fs.writeFile(petsPath, petsJSON, function(writeErr) {
-        if (writeErr) {
-            throw writeErr;
+app.delete("/pets/:id", function(req, res) {
+    fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+        if (err) {
+            console.log(err.stack);
+            return res.sendStatus(500);
         }
-        res.send(pets);
-    });
-  })
+
+        var id = Number.parseInt(req.params.id); //parse string and return integer
+        // console.log(id);
+
+        var pets = JSON.parse(petsJSON);
+
+        var updatePet = pets[id];
+        console.log(pets[id]);
+
+        if (id < 0 || id >= pets.length || Number.isNaN(id)) {
+            return res.sendStatus(404);
+        }
+
+        pets.splice(id, 1);
+
+        var petsJSON = JSON.stringify(pets); //contents of the file we are reading if it doesn't error
+
+        fs.writeFile(petsPath, petsJSON, function(writeErr) {
+            if (writeErr) {
+                throw writeErr;
+            }
+            res.send(pets);
+        });
+    })
 });
-
-
-//   if(pets.length <= req.params.id){
-//     res.statusCode = 400;
-//     return res.send('400 Not Found');
-//   }
-//   var pets = JSON.parse(petsJSON);
-//
-//   pets.splice(req.params.id, 1);
-//   res.send(pets);
-// })
 
 app.use(function(req, res, next) {
     res.status(404).send("404 Not Found")
 });
 
+//listen on port
 app.listen(port, function() {
     console.log("listening on port ", port);
 });
