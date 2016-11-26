@@ -13,16 +13,16 @@ app.use(morgan('dev'));
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); //middleware to parse body
 
-app.disable('x-powered-by'); //??ask about this
+app.disable('x-powered-by');
 
 app.use(express.static('public'));
 
 //get
-app.get('/pets', function(req, res) { //??not doing anything with req - why again?
-    fs.readFile(petsPath, 'utf8', function(err, data) { //this will change to PostgreSQL
+app.get('/pets', function(req, res) {
+    fs.readFile(petsPath, 'utf8', function(err, data) {
         if (err) { //error checking comes 1st!
-            console.log(err.stack); //??not sure what this is
-            return res.sendStatus(500); //??research this more..shouldnt this be a 400 msg
+            console.log(err.stack);
+            return res.sendStatus(500);
         }
         var pets = JSON.parse(data); //this variable must stay here!! changing .json data
         // console.log(data);
@@ -92,7 +92,7 @@ app.post('/pets', function(req, res) {
     })
 });
 
-//put -- find item by index, over write with new pets
+//put -- find item by index, over write with new info
 app.put('/pets/:id', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
         if (err) {
@@ -158,8 +158,8 @@ app.delete("/pets/:id", function(req, res) {
 
         pets.splice(id, 1);
 
-        var petsJSON = JSON.stringify(pets); //contents of the file we are reading if it doesn't error
-
+        var petsJSON = JSON.stringify(pets);
+        
         fs.writeFile(petsPath, petsJSON, function(writeErr) {
             if (writeErr) {
                 throw writeErr;
