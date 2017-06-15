@@ -25,8 +25,8 @@ app.get('/pets', function(req, res) {
             return res.sendStatus(500);
         }
         var pets = JSON.parse(data); //this variable must stay here!! changing .json data
-        // console.log(data);
-        // console.log(pets);
+        console.log(data);
+        console.log(pets);
         res.send(pets);
     });
 });
@@ -105,8 +105,8 @@ app.put('/pets/:id', function(req, res) {
 
         var pets = JSON.parse(petsJSON); //do not move variable
 
-        var updatePet = pets[id];
-        console.log(pets[id]);
+        // var updatePet = pets[id];
+        // console.log(pets[id]);
 
         if (id < 0 || id >= pets.length || Number.isNaN(id)) {
             return res.sendStatus(400);
@@ -145,12 +145,12 @@ app.delete("/pets/:id", function(req, res) {
         }
 
         var id = Number.parseInt(req.params.id); //parse string and return integer
-        // console.log(id);
+        console.log(id);
 
         var pets = JSON.parse(petsJSON);
 
-        var updatePet = pets[id];
-        console.log(pets[id]);
+        // var updatePet = pets[id];
+        // console.log(pets[id]);
 
         if (id < 0 || id >= pets.length || Number.isNaN(id)) {
             return res.sendStatus(404);
@@ -159,11 +159,12 @@ app.delete("/pets/:id", function(req, res) {
         pets.splice(id, 1);
 
         var petsJSON = JSON.stringify(pets);
-        
+
         fs.writeFile(petsPath, petsJSON, function(writeErr) {
             if (writeErr) {
                 throw writeErr;
             }
+            // console.log('pets' , pets[0]);
             res.send(pets);
         });
     })

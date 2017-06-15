@@ -16,10 +16,10 @@ app.disable('x-powered-by');
 //get
 app.get('/pets', function(req, res) {
     fs.readFile(petsPath, 'utf8', function(err, data) {
-        if (err) { //error checking comes 1st!
-            console.log(err.stack);
-            return res.sendStatus(500);
-        }
+        // if (err) { //error checking comes 1st!
+        //     console.log(err.stack);
+        //     return res.sendStatus(500);
+        // }
         var pets = JSON.parse(data);
         // console.log(data);
         // console.log(pets);
